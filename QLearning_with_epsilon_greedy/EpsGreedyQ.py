@@ -60,11 +60,11 @@ def memoryIN(MEM, S, A, R, Sn):
     MEM[4:, 0] = np.random.binomial(1, prob, K)
 
     return MEM
-def EpsGreedyPolicy(epsilon, Q):
+def EpsGreedyPolicy(epsilon, Q, k, St):
     if np.random.uniform()>epsilon:
-        if Q[0, 0, k] > Q[0, 1, k]:
+        if Q[St, 0, k] > Q[St, 1, k]:
             At = 0
-        elif Q[0, 0, k] < Q[0, 1, k]:
+        elif Q[St, 0, k] < Q[St, 1, k]:
             At = 1
         else:
             At = np.random.randint(0, 2)
@@ -82,9 +82,9 @@ def env1(S, A):
     else:
         Sn = S + 1
     if Sn == 0:
-        return 1, 2
+        return 1, 1
     elif Sn == 9:
-        return 100, 2
+        return 100, 1
     else:
         return 0, Sn
 
@@ -116,7 +116,7 @@ max_tm = 400
 step_tm = 1
 init_tm = 0
 
-test_tm = 50
+test_tm = 20
 
 Test_Reward = np.zeros([max_run_time,max_tm/test_tm,max_ann_time/step_ann_time]) 
 
@@ -137,7 +137,7 @@ for annealing_time in range(init_ann_time,max_ann_time,step_ann_time): # Anneali
             
             k = np.random.randint(K) # Choosen header for this episode
             # 1) Select action using epsilon greedy policy 
-            At = EpsGreedyPolicy(epsilon, Q)
+            At = EpsGreedyPolicy(epsilon, Q, k, St)
                 
             # 2) Do action & Get next state and reward.
             Rn, Sn = env1(St, At)
@@ -167,22 +167,22 @@ for annealing_time in range(init_ann_time,max_ann_time,step_ann_time): # Anneali
             print "Epsilon:", epsilon
             print "Q values:"
             print Q[:, :, k]
-    
+            
             # 5) State Transition
             St = Sn
-
+            
             # 6) Test
             if time_step % test_tm == 0:
                 Stest = 1 
                 Test_Reward_Tmp = 0
                 for test_time_step in range(0,10,1):
-                    Atest = EpsGreedyPolicy(0, Q)
+                    Atest = EpsGreedyPolicy(0, Q, k, Stest)
                     Rntest, Sntest = env1(Stest, Atest)
                     Test_Reward_Tmp = Test_Reward_Tmp + Rntest
                     Stest = Sntest
-
+           
                 Test_Reward[run_time, time_step/test_tm, annealing_time/step_ann_time-1] = Test_Reward_Tmp
-
+           
         np.save('Test_Reward_STDDEV_'+str(STDDEV)+'.npy', Test_Reward)
 
 
