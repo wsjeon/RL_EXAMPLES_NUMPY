@@ -1,1 +1,1 @@
-# RL_EXAMPLES_NUMPY
+# Reinforcement Learning Examples using Numpy
