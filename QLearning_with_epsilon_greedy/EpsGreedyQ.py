@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 # Graph Construction
 # ============================================================================
 # (0) Parameters
-gamma = 0.9 # discount factor
-alpha = 0.2 # learning rate
+gamma = 0.99 # discount factor
+alpha = 0.1 # learning rate
 mem_size = 1 # experience memory size
 K = 1 # number of Q headers
 prob = 1  # probability to update each Q
@@ -84,7 +84,7 @@ def env1(S, A):
     if Sn == 0:
         return 1, 1
     elif Sn == 9:
-        return 100, 1
+        return 1000, 1
     else:
         return 0, Sn
 
@@ -104,19 +104,19 @@ def env3(S, A):
         return 0, Sn
 
 # (5) Desired Result
-max_ann_time = 201
-step_ann_time = 20
-init_ann_time = 20
+max_ann_time = 3001
+step_ann_time = 400
+init_ann_time = 400
 
 max_run_time = 100
 step_run_time = 1
 init_run_time = 0
 
-max_tm = 400
+max_tm = 3000
 step_tm = 1
 init_tm = 0
 
-test_tm = 20
+test_tm = 100
 
 Test_Reward = np.zeros([max_run_time,max_tm/test_tm,max_ann_time/step_ann_time]) 
 
@@ -180,9 +180,15 @@ for annealing_time in range(init_ann_time,max_ann_time,step_ann_time): # Anneali
                     Rntest, Sntest = env1(Stest, Atest)
                     Test_Reward_Tmp = Test_Reward_Tmp + Rntest
                     Stest = Sntest
-           
+                    
                 Test_Reward[run_time, time_step/test_tm, annealing_time/step_ann_time-1] = Test_Reward_Tmp
-           
-        np.save('Test_Reward_STDDEV_'+str(STDDEV)+'.npy', Test_Reward)
+                print Test_Reward_Tmp
+
+        STR0 = '_GM_'+str(gamma)
+        STR1 = '_LR_'+str(alpha)
+        STR2 = '_K_'+str(K)
+        STR3 = '_SD_'+str(STDDEV)
+        STR4 = '_TE_'+str(target_epsilon)   
+        np.save('DATA_'+STR0+STR1+STR2+STR3+STR4+'.npy', Test_Reward)
 
 
