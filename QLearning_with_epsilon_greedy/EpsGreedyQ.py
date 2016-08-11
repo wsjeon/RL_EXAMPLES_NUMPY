@@ -1,7 +1,6 @@
 # ============================================================================
 # Wonseok Jeon, EE, KAIST
-# 2016/08/09: Epsilon greedy with plot
-# As a simple example, I did not use the gradient descent.
+# 2016/08/11: Epsilon greedy 
 # ============================================================================
 import numpy as np
 import random
@@ -9,9 +8,6 @@ import time
 import os
 import matplotlib.pyplot as plt
 
-# ============================================================================
-# Graph Construction
-# ============================================================================
 # (0) Parameters
 gamma = 0.99 # discount factor
 alpha = 0.1 # learning rate
