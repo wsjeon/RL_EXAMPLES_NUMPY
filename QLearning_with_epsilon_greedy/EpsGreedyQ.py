@@ -1,6 +1,7 @@
 # ============================================================================
 # Wonseok Jeon, EE, KAIST
-# 2016/08/11: Epsilon greedy 
+# 2016/08/09: Epsilon greedy with plot
+# As a simple example, I did not use the gradient descent.
 # ============================================================================
 import numpy as np
 import random
@@ -8,6 +9,9 @@ import time
 import os
 import matplotlib.pyplot as plt
 
+# ============================================================================
+# Graph Construction
+# ============================================================================
 # (0) Parameters
 gamma = 0.99 # discount factor
 alpha = 0.1 # learning rate
@@ -16,7 +20,7 @@ K = 1 # number of Q headers
 prob = 1  # probability to update each Q
 replay = 0 # replay or not
 STDDEV = 0 # standard deviation for randomization
-target_epsilon = 0.1
+target_epsilon = 0
 
 # (1) Q values: 10 states, 2 actions, K headers
 def Initialize_Q(STDDEV, K):
@@ -100,15 +104,15 @@ def env3(S, A):
         return 0, Sn
 
 # (5) Desired Result
-max_ann_time = 3001
+max_ann_time = 4001
 step_ann_time = 400
-init_ann_time = 400
+init_ann_time =3200
 
 max_run_time = 100
 step_run_time = 1
 init_run_time = 0
 
-max_tm = 3000
+max_tm = 5000
 step_tm = 1
 init_tm = 0
 
